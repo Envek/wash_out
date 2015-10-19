@@ -37,7 +37,7 @@ ActionController::Renderers.add :soap do |what, options|
   _render_soap(what, options)
 end
 
-ActionController::Base.class_eval do
+ActionController::API.class_eval do
 
   # Define a SOAP service. The function has no required +options+:
   # but allow any of :parser, :namespace, :wsdl_style, :snakecase_input,
