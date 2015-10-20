@@ -9,7 +9,7 @@ module WashOutHelper
         { :"xsi:nil" => true }
       end
     when 'document'
-      { }
+      { :"xsi:type" => param.namespaced_type }
     end
   end
 
