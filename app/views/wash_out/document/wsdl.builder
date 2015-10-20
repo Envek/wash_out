@@ -3,6 +3,7 @@ xml.definitions 'xmlns' => 'http://schemas.xmlsoap.org/wsdl/',
                 'xmlns:tns' => @namespace,
                 'xmlns:soap' => 'http://schemas.xmlsoap.org/wsdl/soap/',
                 'xmlns:xsd' => 'http://www.w3.org/2001/XMLSchema',
+                'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
                 'xmlns:soap-enc' => 'http://schemas.xmlsoap.org/soap/encoding/',
                 'xmlns:wsdl' => 'http://schemas.xmlsoap.org/wsdl/',
                 'name' => @name,
@@ -63,6 +64,19 @@ xml.definitions 'xmlns' => 'http://schemas.xmlsoap.org/wsdl/',
   xml.service :name => "service" do
     xml.port :name => "#{@name}_port", :binding => "tns:#{@name}_binding" do
       xml.tag! "soap:address", :location => WashOut::Router.url(request, @name)
+    end
+  end
+
+  @map.each do |operation, formats|
+    xml.message :name => "#{operation}" do
+      formats[:in].each do |p|
+        xml.part wsdl_occurence(p, true, :name => p.name, :type => p.namespaced_type)
+      end
+    end
+    xml.message :name => formats[:response_tag] do
+      formats[:out].each do |p|
+        xml.part wsdl_occurence(p, true, :name => p.name, :type => p.namespaced_type)
+      end
     end
   end
 end
