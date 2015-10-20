@@ -5,7 +5,7 @@ module WashOutHelper
     when 'rpc'
       { :"xsi:type" => param.namespaced_type }
     when 'document'
-      { }
+      { :"xsi:type" => param.namespaced_type }
     end
   end
 
