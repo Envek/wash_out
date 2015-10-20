@@ -13,6 +13,15 @@ module WashOutHelper
     end
   end
 
+  def wsdl_use_type
+    case controller.soap_config.use.to_s
+    when 'literal'
+      {:use => 'literal'}
+    else
+      {:use => "encoded", :encodingStyle => 'http://schemas.xmlsoap.org/soap/encoding/'}
+    end
+  end
+
   def wsdl_data_attrs(param)
     param.map.reduce({}) do |memo, p|
       if p.respond_to?(:attribute?) && p.attribute?
