@@ -34,14 +34,10 @@ xml.definitions 'xmlns' => 'http://schemas.xmlsoap.org/wsdl/',
       xml.operation :name => operation do
         xml.tag! "soap:operation", :soapAction => operation
         xml.input do
-          xml.tag! "soap:body",
-            :use => "encoded", :encodingStyle => 'http://schemas.xmlsoap.org/soap/encoding/',
-            :namespace => @namespace
+          xml.tag! "soap:body", {:namespace => @namespace}.merge!(wsdl_use_type)
         end
         xml.output do
-          xml.tag! "soap:body",
-            :use => "encoded", :encodingStyle => 'http://schemas.xmlsoap.org/soap/encoding/',
-            :namespace => @namespace
+          xml.tag! "soap:body", {:namespace => @namespace}.merge!(wsdl_use_type)
         end
       end
     end
