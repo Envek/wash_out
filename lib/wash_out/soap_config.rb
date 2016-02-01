@@ -7,6 +7,7 @@ module WashOut
     DEFAULT_CONFIG = {
       parser: :rexml,
       namespace: 'urn:WashOut',
+      body_namespace: nil,
       wsdl_style: 'rpc',
       use: 'encoded',
       snakecase_input: false,
