@@ -72,6 +72,7 @@ module WashOut
 
       @map       = self.class.soap_actions
       @namespace = soap_config.namespace
+      @body_namespace = soap_config.body_namespace
       @name      = controller_path.gsub('/', '_')
 
       render :template => "wash_out/#{soap_config.wsdl_style}/wsdl", :layout => false,
@@ -81,6 +82,7 @@ module WashOut
     # Render a SOAP response.
     def _render_soap(result, options)
       @namespace   = soap_config.namespace
+      @body_namespace = soap_config.body_namespace
       @operation   = soap_action = request.env['wash_out.soap_action']
       @action_spec = self.class.soap_actions[soap_action]
 
