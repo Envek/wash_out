@@ -70,6 +70,7 @@ module WashOut
     def _generate_wsdl
       @map       = self.class.soap_actions
       @namespace = soap_config.namespace
+      @body_namespace = soap_config.body_namespace
       @name      = controller_path
 
       render :template => "wash_out/#{soap_config.wsdl_style}/wsdl", :layout => false,
@@ -79,6 +80,7 @@ module WashOut
     # Render a SOAP response.
     def _render_soap(result, options)
       @namespace   = soap_config.namespace
+      @body_namespace = soap_config.body_namespace
       @operation   = soap_action = request.env['wash_out.soap_action']
       @action_spec = self.class.soap_actions[soap_action]
 
@@ -163,7 +165,7 @@ module WashOut
       entity = if defined?(Rails::VERSION::MAJOR) && (Rails::VERSION::MAJOR >= 4)
         'action'
       else
-        'filter' 
+        'filter'
       end
 
       controller.send :"around_#{entity}", :_catch_soap_errors
