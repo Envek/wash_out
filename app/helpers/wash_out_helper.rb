@@ -51,9 +51,10 @@ module WashOutHelper
             xml.tag! tag_name, param_options.merge(attrs), &blk
           end
         else
+          next if param.map.blank?
           xml.tag! tag_name, param_options do
             wsdl_data(xml, param.map)
-          end if param.map.present?
+          end
         end
       else
         if param.multiplied
@@ -62,7 +63,9 @@ module WashOutHelper
             xml.tag! tag_name, v, param_options
           end
         else
-          xml.tag! tag_name, param.value, param_options
+          next if param.value.blank?
+          value = (param.type == 'datetime') ? param.value.try(:strftime, '%Y-%m-%dT%H:%M:%S%:z') : param.value
+          xml.tag! tag_name, value, param_options
         end
       end
     end
