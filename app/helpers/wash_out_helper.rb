@@ -53,7 +53,7 @@ module WashOutHelper
         else
           xml.tag! tag_name, param_options do
             wsdl_data(xml, param.map)
-          end
+          end if param.map.present?
         end
       else
         if param.multiplied
