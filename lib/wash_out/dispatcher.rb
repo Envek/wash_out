@@ -142,6 +142,11 @@ module WashOut
       render_soap_error("Cannot find SOAP action mapping for #{request.env['wash_out.soap_action']}")
     end
 
+    # This action is a fallback for invalid SOAP message.
+    def _invalid_action
+      render_soap_error("Cannot parse SOAP message: #{request.env['wash_out.soap_error']}")
+    end
+
     def _catch_soap_errors
       yield
     rescue SOAPError => error
@@ -163,9 +168,9 @@ module WashOut
       controller.send :around_filter, :_catch_soap_errors
       controller.send :helper, :wash_out
       controller.send :before_filter, :_authenticate_wsse,     :except => [
-        :_generate_wsdl, :_invalid_action ]
+        :_generate_wsdl, :_invalid_action, :_invalid_soap ]
       controller.send :before_filter, :_map_soap_parameters,   :except => [
-        :_generate_wsdl, :_invalid_action ]
+        :_generate_wsdl, :_invalid_action, :_invalid_soap  ]
       controller.send :skip_before_filter, :verify_authenticity_token
     end
 
