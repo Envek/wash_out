@@ -1,0 +1,4 @@
+<q1:Array id="id1" q1:arrayType="xsd:int[1]" xmlns:q1="http://schemas.xmlsoap.org/soap/encoding/">
+  <Item>1</Item>
+  <Item>2</Item>
+</q1:Array>

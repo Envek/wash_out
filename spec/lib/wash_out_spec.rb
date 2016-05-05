@@ -19,6 +19,11 @@ describe WashOut do
     savon.call(method, :message => message).to_hash
   end
 
+  def savon_raw(method, xml, &block)
+    savon = Savon::Client.new(:log => false, :wsdl => 'http://app/api/wsdl', &block)
+    savon.call(method, :xml => xml).to_hash
+  end
+
   def savon!(method, message={}, &block)
     message = {:value => message} unless message.is_a?(Hash)
 
@@ -659,6 +664,27 @@ describe WashOut do
       savon(:rocknroll, "ZOMG" => 'yam!')
     end
 
+    it "raises when SOAP message without SOAP Envelope arrives" do
+      mock_controller do
+        soap_action "error", :args => nil, :return => nil
+        def error
+          render :soap => nil
+        end
+      end
+      invalid_request = File.read(File.expand_path("../../fixtures/invalid_no_envelope.xml", __FILE__))
+      expect { savon_raw(:error, invalid_request) }.to raise_exception(Savon::SOAPFault)
+    end
+
+    it "raises when SOAP message without SOAP Body arrives" do
+      mock_controller do
+        soap_action "error", :args => nil, :return => nil
+        def error
+          render :soap => nil
+        end
+      end
+      invalid_request = File.read(File.expand_path("../../fixtures/invalid_no_body.xml", __FILE__))
+      expect { savon_raw(:error, invalid_request) }.to raise_exception(Savon::SOAPFault)
+    end
   end
 
   describe "WS Security" do
