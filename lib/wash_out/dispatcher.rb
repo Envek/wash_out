@@ -143,7 +143,7 @@ module WashOut
     end
 
     # This action is a fallback for invalid SOAP message.
-    def _invalid_action
+    def _invalid_soap
       render_soap_error("Cannot parse SOAP message: #{request.env['wash_out.soap_error']}")
     end
 
